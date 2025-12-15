@@ -22,33 +22,22 @@ def executeRotation(position, rotation)
 	puts "executeRotation"
 	puts "Current Position: #{position}, Rotation: #{rotation}"
 	passedZeroes = 0
-	counter = 0
-	while rotation != 0 do
-		puts "While Do Position #{position}, rotation #{rotation}, passedZeroes #{passedZeroes}."
-		if(position + rotation < 0) 
-			puts "IS LESS THAN ZERO - P+R #{position + rotation}, P #{position}, R #{rotation}"
-			rotation += position != 0 ? position : position
-			passedZeroes += 1
-			position = 0
-			puts "LESS THAN RESULT: Rotation: #{rotation}, passedZeroes #{passedZeroes}, position: #{position}."
-		elsif(position + rotation > 100)
-			puts "IS GREATER THAN HUNDRED - P+R #{position + rotation}, P #{position}, R #{rotation}"
-			rotation -= (100 - position)
-			passedZeroes += 1
-			position = 0
-		else
-			puts "IS WITHIN BOUNDS - P+R #{position + rotation}, P #{position}, R #{rotation}"
-			position = position + rotation
-			rotation = rotation - rotation
-		end
-		counter+= 1
-		if counter > 10 then raise "Loop has gone 10 times, raising error!" end
+	holder = position + rotation
+
+	while holder > 100 do
+		holder -= 100
+		passedZeroes += 1
 	end
-	puts "passedZeroes: #{passedZeroes}"
-	puts "Position Result: #{position}"
-	position = position % 100 #In the event it is 100, make it 0
-	zeroes = position == 0 ? passedZeroes + 1 : passedZeroes
-	return position%100 , zeroes
+
+	while holder < 0 do
+		holder += 100
+		passedZeroes += 1
+	end 
+	newPosition = (position + rotation)%100
+	if position == 0 && rotation < 0 then passedZeroes -= 1 end
+	zeroes = newPosition == 0 ? passedZeroes + 1 : passedZeroes
+	puts "Execute result: new Pos: #{newPosition}, passedZeroes: #{passedZeroes}, zeroes: #{zeroes}"
+	return newPosition, zeroes
 end
 
 @DEBUG = false
